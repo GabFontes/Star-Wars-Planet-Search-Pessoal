@@ -3,7 +3,6 @@ import planetsContext from '../context/PlanetsContext';
 
 function Table() {
   const { data, handleChange, search } = useContext(planetsContext);
-
   let results = [];
 
   if (data.length > 0) {
@@ -34,7 +33,7 @@ function Table() {
         <thead>
           <tr>
             {results.map((e, i) => (
-              <td key={ i }>{ e }</td>))}
+              <th key={ i }>{ e }</th>))}
           </tr>
         </thead>
         <tbody>
