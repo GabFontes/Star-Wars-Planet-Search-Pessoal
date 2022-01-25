@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import planetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { data, handleChange, search } = useContext(planetsContext);
+  const { data, search } = useContext(planetsContext);
   let results = [];
 
   if (data.length > 0) {
@@ -12,23 +12,6 @@ function Table() {
 
   return (
     <div>
-      <header>
-        <h1>Projeto Star Wars - Trybe</h1>
-
-        <form>
-          <label htmlFor="name-filter">
-            <input
-              id="name-filter"
-              data-testid="name-filter"
-              onChange={ handleChange }
-            />
-          </label>
-        </form>
-      </header>
-
-      <br />
-      <br />
-
       <table border="1">
         <thead>
           <tr>
