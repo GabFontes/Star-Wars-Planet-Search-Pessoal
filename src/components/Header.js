@@ -35,7 +35,6 @@ function HeaderFilters() {
   };
 
   const coluns = getColumns();
-  console.log(coluns);
 
   return (
     <header>

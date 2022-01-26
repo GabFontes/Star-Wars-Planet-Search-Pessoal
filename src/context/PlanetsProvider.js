@@ -20,7 +20,6 @@ function PlanetsProvider({ children }) {
   const [input, setInput] = useState(initalInput);
   const [search, setSearch] = useState([]);
   const [numericFilter, setNumericFilter] = useState(numericValueFilter);
-  console.log(numericFilter);
 
   useEffect(() => {
     (() => {
@@ -66,7 +65,7 @@ function PlanetsProvider({ children }) {
     (() => {
       setFilter();
     })();
-  }, [numericFilter, setFilter]);
+  }, [numericFilter]);
 
   const handleChange = ({ target }) => {
     setInput(() => ({
