@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import planetsContext from '../context/PlanetsContext';
 
-const columnFilter = [
+const COLUMN_FILTER = [
   'population',
   'orbital_period',
   'diameter',
@@ -16,14 +16,26 @@ const comparisonFilters = [
 ];
 
 function HeaderFilters() {
-  const { changeFilters, handleChange } = useContext(planetsContext);
+  const { changeFilters, handleChange, numericFilter } = useContext(planetsContext);
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState('0');
+  const { filterByNumericValues } = numericFilter;
 
   const handleClick = () => {
-    changeFilters(column, comparison, value);
+    changeFilters({ column, comparison, value });
   };
+
+  const getColumns = () => {
+    const coluns = [];
+    filterByNumericValues.forEach((element) => {
+      coluns.push(element.column);
+    });
+    return coluns;
+  };
+
+  const coluns = getColumns();
+  console.log(coluns);
 
   return (
     <header>
@@ -42,9 +54,14 @@ function HeaderFilters() {
             data-testid="column-filter"
             onChange={ ({ target }) => setColumn(target.value) }
           >
-            {columnFilter.map((col) => (
-              <option key={ col } value={ col }>{col}</option>
-            ))}
+            {
+              COLUMN_FILTER
+                .filter((col) => !coluns.some((opt) => opt === col)).map((col) => (
+                  <option key={ col }>
+                    {col}
+                  </option>
+                ))
+            }
           </select>
         </label>
         <label htmlFor="comparison-filter">
@@ -63,7 +80,7 @@ function HeaderFilters() {
             id="value-filter"
             type="number"
             data-testid="value-filter"
-            value="0"
+            value={ value }
             onChange={ ({ target }) => setValue(target.value) }
           />
         </label>

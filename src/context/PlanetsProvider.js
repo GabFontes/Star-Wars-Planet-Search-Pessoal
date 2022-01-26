@@ -12,13 +12,7 @@ const initalInput = {
 };
 
 const numericValueFilter = {
-  filterByNumericValues: [
-    {
-      column: 'population',
-      comparison: 'maior que',
-      value: '0',
-    },
-  ],
+  filterByNumericValues: [],
 };
 
 function PlanetsProvider({ children }) {
@@ -26,6 +20,7 @@ function PlanetsProvider({ children }) {
   const [input, setInput] = useState(initalInput);
   const [search, setSearch] = useState([]);
   const [numericFilter, setNumericFilter] = useState(numericValueFilter);
+  console.log(numericFilter);
 
   useEffect(() => {
     (() => {
@@ -34,9 +29,10 @@ function PlanetsProvider({ children }) {
     })();
   }, [input, data]);
 
-  const changeFilters = (column, comparison, value) => {
+  const changeFilters = ({ column, comparison, value }) => {
     setNumericFilter(() => ({
       filterByNumericValues: [
+        ...numericFilter.filterByNumericValues,
         {
           column,
           comparison,
@@ -49,26 +45,28 @@ function PlanetsProvider({ children }) {
   const setFilter = () => {
     // créditos ao Airton Lopes
     const { filterByNumericValues } = numericFilter;
-    const { column, comparison, value } = filterByNumericValues[0];
-    const filter = search.filter((p) => {
-      const columnValue = Number(p[column]);
-      const filterValue = Number(value);
-      if (comparison === 'maior que') {
-        return columnValue > filterValue;
-      }
-      if (comparison === 'menor que') {
-        return columnValue < filterValue;
-      }
-      return columnValue === filterValue;
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      const filter = search.filter((planet) => {
+        const columnValue = Number(planet[column]);
+        const filterValue = Number(value);
+
+        if (comparison === 'maior que') {
+          return columnValue > filterValue;
+        }
+        if (comparison === 'menor que') {
+          return columnValue < filterValue;
+        }
+        return columnValue === filterValue;
+      });
+      setSearch(filter);
     });
-    setSearch(filter);
   };
 
   useEffect(() => {
     (() => {
       setFilter();
     })();
-  }, [numericFilter]);
+  }, [numericFilter, setFilter]);
 
   const handleChange = ({ target }) => {
     setInput(() => ({
